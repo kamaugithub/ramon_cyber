@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
@@ -17,7 +16,7 @@ class RamonCyberApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        scaffoldBackgroundColor: const Color(0xFF0F172A), // Deep dark background for glass effect
+        scaffoldBackgroundColor: const Color(0xFF0F172A), // Deep dark background
         primaryColor: const Color(0xFF0059B3),
         textTheme: const TextTheme(
           headlineMedium: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
@@ -35,14 +34,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF1E293B),
-        title: const Text('RAMON CYBER', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
-        elevation: 0,
-      ),
       body: Stack(
         children: [
-          // Background Gradient Blobs to enhance the Frosted Glass effect
+          // Background Gradient Blobs
           Positioned(
             top: -50,
             left: -50,
@@ -67,38 +61,67 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // 1. Slow Continuous Right-to-Left Running Banner (HCI Marquee)
-                const RunningMarqueeBanner(
-                  text: "Ramon Cyber and Digital Services — Fast, Reliable & Professional Digital Solutions — ",
+          
+          // Main Layout Structure
+          Column(
+            children: [
+              // 1. STICKY APP BAR
+              Container(
+                color: const Color(0xFF1E293B),
+                padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).padding.top + 12,
+                  bottom: 12,
+                  left: 16,
+                  right: 16,
                 ),
-                const SizedBox(height: 20),
-
-                // 2. Service Cards Grid with Glassmorphism
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 420,
-                      mainAxisExtent: 520, // Increased height to comfortably fit all detailed items
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
-                    ),
-                    itemCount: detailedServices.length,
-                    itemBuilder: (context, index) {
-                      final service = detailedServices[index];
-                      return GlassmorphicServiceCard(service: service);
-                    },
+                width: double.infinity,
+                child: const Text(
+                  'RAMON CYBER',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    letterSpacing: 1.2,
                   ),
                 ),
-                const SizedBox(height: 30),
-              ],
-            ),
+              ),
+
+              // 2. STICKY RUNNING MARQUEE BANNER
+              const RunningMarqueeBanner(
+                text: "Ramon Cyber and Digital Services — Fast, Reliable & Professional Digital Solutions — ",
+              ),
+
+              // 3. SCROLLABLE GRID CONTENT
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 420,
+                            mainAxisExtent: 520,
+                            crossAxisSpacing: 16,
+                            mainAxisSpacing: 16,
+                          ),
+                          itemCount: detailedServices.length,
+                          itemBuilder: (context, index) {
+                            final service = detailedServices[index];
+                            return GlassmorphicServiceCard(service: service);
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -138,7 +161,7 @@ class _RunningMarqueeBannerState extends State<RunningMarqueeBanner> {
         if (currentOffset >= maxExtent) {
           _scrollController.jumpTo(0);
         } else {
-          _scrollController.jumpTo(currentOffset + 1.0); // Slow readable pace
+          _scrollController.jumpTo(currentOffset + 1.0);
         }
       }
     });
@@ -188,32 +211,174 @@ class _RunningMarqueeBannerState extends State<RunningMarqueeBanner> {
 }
 
 // ----------------------------------------------------
-// GLASSMORPHIC CARD COMPONENT (FOGGY GLASS)
+// GLASSMORPHIC CARD COMPONENT
 // ----------------------------------------------------
 class GlassmorphicServiceCard extends StatelessWidget {
   final ServiceData service;
 
   const GlassmorphicServiceCard({super.key, required this.service});
 
+  void _showEnquiryDialog(BuildContext context) {
+    final contactController = TextEditingController();
+    final messageController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: BackdropFilter(
+              filter: ui.ImageFilter.blur(sigmaX: 16.0, sigmaY: 16.0),
+              child: Container(
+                padding: const EdgeInsets.all(24),
+                constraints: const BoxConstraints(maxWidth: 450),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1E293B).withOpacity(0.85),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: const Color(0xFF00AEEF).withOpacity(0.4),
+                    width: 1.5,
+                  ),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'Enquire: ${service.title}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.close, color: Colors.white54),
+                          onPressed: () => Navigator.of(dialogContext).pop(),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Leave your details and query below. We will reach out to you directly!',
+                      style: TextStyle(color: Colors.white70, fontSize: 13),
+                    ),
+                    const SizedBox(height: 20),
+                    
+                    // Contact Field
+                    TextField(
+                      controller: contactController,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.contact_mail_outlined, color: Color(0xFF00AEEF)),
+                        labelText: 'Phone Number or Email',
+                        labelStyle: const TextStyle(color: Colors.white60),
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.08),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.white.withOpacity(0.1)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: Color(0xFF00AEEF)),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Enquiry Field
+                    TextField(
+                      controller: messageController,
+                      maxLines: 3,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        prefixIcon: const Padding(
+                          padding: EdgeInsets.only(bottom: 40.0),
+                          child: Icon(Icons.chat_bubble_outline_rounded, color: Color(0xFF00AEEF)),
+                        ),
+                        labelText: 'Describe your enquiry...',
+                        labelStyle: const TextStyle(color: Colors.white60),
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.08),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.white.withOpacity(0.1)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: Color(0xFF00AEEF)),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Submit Button
+                    SizedBox(
+                      width: double.infinity,
+                      height: 48,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF0059B3),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                        onPressed: () {
+                          // Submit to backend/database logic goes here
+                          Navigator.of(dialogContext).pop();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Enquiry submitted successfully! We will contact you soon.'),
+                              backgroundColor: Color(0xFF0059B3),
+                            ),
+                          );
+                        },
+                        child: const Text('Submit Enquiry', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: BackdropFilter(
-        filter: ui.ImageFilter.blur(sigmaX: 12.0, sigmaY: 12.0), // Foggy Blur Effect
+        filter: ui.ImageFilter.blur(sigmaX: 12.0, sigmaY: 12.0),
         child: Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.12), // Semi-transparent overlay
+            color: Colors.white.withOpacity(0.12),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: Colors.white.withOpacity(0.25), // Frosting highlights
+              color: Colors.white.withOpacity(0.25),
               width: 1.5,
             ),
           ),
           child: Column(
             children: [
-              // Central Icon Header
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
@@ -223,7 +388,6 @@ class GlassmorphicServiceCard extends StatelessWidget {
                 child: Icon(service.mainIcon, size: 36, color: const Color(0xFF00AEEF)),
               ),
               const SizedBox(height: 12),
-              // Centered Service Title
               Text(
                 service.title,
                 textAlign: TextAlign.center,
@@ -236,7 +400,6 @@ class GlassmorphicServiceCard extends StatelessWidget {
               const SizedBox(height: 12),
               const Divider(color: Colors.white24, height: 1),
               const SizedBox(height: 12),
-              // Scrollable list of detailed items
               Expanded(
                 child: ListView.builder(
                   shrinkWrap: true,
@@ -264,7 +427,6 @@ class GlassmorphicServiceCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              // Action Button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -273,7 +435,7 @@ class GlassmorphicServiceCard extends StatelessWidget {
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
-                  onPressed: () {},
+                  onPressed: () => _showEnquiryDialog(context),
                   child: const Text('Enquire Now', style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
               ),
@@ -383,4 +545,3 @@ final List<ServiceData> detailedServices = [
     ],
   ),
 ];
-
