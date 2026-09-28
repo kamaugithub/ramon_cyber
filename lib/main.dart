@@ -16,7 +16,7 @@ class RamonCyberApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        scaffoldBackgroundColor: const Color(0xFF0F172A), // Deep dark background
+        scaffoldBackgroundColor: const Color(0xFF0F172A),
         primaryColor: const Color(0xFF0059B3),
         textTheme: const TextTheme(
           headlineMedium: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
@@ -61,11 +61,11 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-          
+
           // Main Layout Structure
           Column(
             children: [
-              // 1. STICKY APP BAR
+              // 1. STICKY APP BAR WITH LOGO AND CENTERED TITLE
               Container(
                 color: const Color(0xFF1E293B),
                 padding: EdgeInsets.only(
@@ -75,20 +75,43 @@ class HomePage extends StatelessWidget {
                   right: 16,
                 ),
                 width: double.infinity,
-                child: const Text(
-                  'RAMON CYBER',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    letterSpacing: 1.2,
-                  ),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    // Logo positioned on the left
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        width: 36,
+                        height: 36,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF00AEEF),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Icon(
+                          Icons.security, // Placeholder icon for the logo
+                          color: Colors.white,
+                          size: 22,
+                        ),
+                      ),
+                    ),
+                    // Centered Title
+                    const Text(
+                      'RAMON CYBER',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                  ],
                 ),
               ),
 
               // 2. STICKY RUNNING MARQUEE BANNER
               const RunningMarqueeBanner(
-                text: "Ramon Cyber and Digital Services — Fast, Reliable & Professional Digital Solutions — ",
+                text: "Ramon Cyber and Digital Services          Fast, Reliable & Professional Digital Solutions    ",
               ),
 
               // 3. SCROLLABLE GRID CONTENT
@@ -339,7 +362,6 @@ class GlassmorphicServiceCard extends StatelessWidget {
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         ),
                         onPressed: () {
-                          // Submit to backend/database logic goes here
                           Navigator.of(dialogContext).pop();
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
