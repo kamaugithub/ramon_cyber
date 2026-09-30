@@ -65,33 +65,42 @@ class HomePage extends StatelessWidget {
           // Main Layout Structure
           Column(
             children: [
-              // 1. STICKY APP BAR WITH LOGO AND CENTERED TITLE
+              // 1. TALLER/WIDER STICKY APP BAR WITH CIRCULAR LOGO
               Container(
                 color: const Color(0xFF1E293B),
                 padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).padding.top + 12,
-                  bottom: 12,
-                  left: 16,
-                  right: 16,
+                  top: MediaQuery.of(context).padding.top + 16,
+                  bottom: 16,
+                  left: 20,
+                  right: 20,
                 ),
                 width: double.infinity,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    // Logo positioned on the left
+                    // Circular Logo Container (Sized larger)
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Container(
-                        width: 36,
-                        height: 36,
+                        width: 52,
+                        height: 52,
+                        padding: const EdgeInsets.all(2), // White border frame
                         decoration: BoxDecoration(
-                          color: const Color(0xFF00AEEF),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Icon(
-                          Icons.security, // Placeholder icon for the logo
+                          shape: BoxShape.circle,
                           color: Colors.white,
-                          size: 22,
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFF00AEEF).withOpacity(0.4),
+                              blurRadius: 8,
+                              spreadRadius: 1,
+                            ),
+                          ],
+                        ),
+                        child: ClipOval(
+                          child: Image.asset(
+                            'assets/logo.jpg', // Replace with your image path
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
@@ -101,8 +110,8 @@ class HomePage extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        letterSpacing: 1.2,
+                        fontSize: 22,
+                        letterSpacing: 1.3,
                       ),
                     ),
                   ],
@@ -295,7 +304,6 @@ class GlassmorphicServiceCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     
-                    // Contact Field
                     TextField(
                       controller: contactController,
                       style: const TextStyle(color: Colors.white),
@@ -321,7 +329,6 @@ class GlassmorphicServiceCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
 
-                    // Enquiry Field
                     TextField(
                       controller: messageController,
                       maxLines: 3,
@@ -351,7 +358,6 @@ class GlassmorphicServiceCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 24),
 
-                    // Submit Button
                     SizedBox(
                       width: double.infinity,
                       height: 48,
