@@ -65,11 +65,11 @@ class HomePage extends StatelessWidget {
           // Main Layout Structure
           Column(
             children: [
-              // 1. TALLER/WIDER STICKY APP BAR WITH CIRCULAR LOGO
+              // 1. TALLER STICKY APP BAR WITH ENLARGED CIRCULAR LOGO
               Container(
                 color: const Color(0xFF1E293B),
                 padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).padding.top + 16,
+                  top: MediaQuery.of(context).padding.top + 12,
                   bottom: 16,
                   left: 20,
                   right: 20,
@@ -78,39 +78,48 @@ class HomePage extends StatelessWidget {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    // Circular Logo Container (Sized larger)
+                    // Circular Logo Container
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Container(
-                        width: 52,
-                        height: 52,
-                        padding: const EdgeInsets.all(2), // White border frame
+                        width: 70,
+                        height: 70,
+                        padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.white,
                           boxShadow: [
                             BoxShadow(
-                              color: const Color(0xFF00AEEF).withOpacity(0.4),
-                              blurRadius: 8,
-                              spreadRadius: 1,
+                              color: const Color(0xFF00AEEF).withOpacity(0.5),
+                              blurRadius: 10,
+                              spreadRadius: 2,
                             ),
                           ],
                         ),
                         child: ClipOval(
                           child: Image.asset(
-                            'assets/logo.jpg', // Replace with your image path
-                            fit: BoxFit.cover,
+                            'assets/logo.jpg',
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Center(
+                                child: Icon(
+                                  Icons.security,
+                                  color: Color(0xFF0059B3),
+                                  size: 36,
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ),
                     ),
-                    // Centered Title
+                    // Centered Main Title
                     const Text(
                       'RAMON CYBER',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 22,
+                        fontSize: 24,
                         letterSpacing: 1.3,
                       ),
                     ),
@@ -303,7 +312,8 @@ class GlassmorphicServiceCard extends StatelessWidget {
                       style: TextStyle(color: Colors.white70, fontSize: 13),
                     ),
                     const SizedBox(height: 20),
-                    
+
+                    // Contact Field
                     TextField(
                       controller: contactController,
                       style: const TextStyle(color: Colors.white),
@@ -329,6 +339,7 @@ class GlassmorphicServiceCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
 
+                    // Enquiry Field
                     TextField(
                       controller: messageController,
                       maxLines: 3,
@@ -358,6 +369,7 @@ class GlassmorphicServiceCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 24),
 
+                    // Submit Button
                     SizedBox(
                       width: double.infinity,
                       height: 48,
